@@ -13,7 +13,7 @@ use anyhow::{Context, Result};
 
 use crate::resolve::ResolvedDep;
 
-pub const DEFAULT_EDITION: &str = "2021";
+pub const DEFAULT_EDITION: &str = "2024";
 
 pub struct ManifestInput<'a> {
     pub package_name: &'a str,

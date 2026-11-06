@@ -41,11 +41,18 @@ the optional shebang, blank lines, comments, and `#![...]` attributes that come
 before the first line of code.
 
 ```rust
-// deps: rand, regex                  // newest compatible versions
-// deps: serde[derive, rc]            // with features
-// deps: tokio@1[macros, rt]          // explicit version requirement + features
-// edition: 2024                      // default: 2021
+// deps: rand, regex
+// deps: serde[derive, rc]
+// deps: tokio@1[macros, rt]
+// edition: 2024
 ```
+
+This asks for the newest suitable versions of `rand` and `regex`, `serde`
+with two features turned on, and `tokio` with version requirement `1` plus
+features. `edition:` sets the
+[Rust edition](https://doc.rust-lang.org/edition-guide/) the script is
+compiled with (default: 2024). A header line can't end with a second `//`
+comment: everything after `deps:` or `edition:` is read as part of the value.
 
 | Form          | Meaning                                                               |
 |---------------|-----------------------------------------------------------------------|
@@ -109,9 +116,18 @@ The program runs in **your** working directory, so runtime paths such as
 symlinks are resolved to the real file first. rustrun never writes anything
 next to your script.
 
-Two environment variables are available at both compile time and run time:
-`RUSTRUN_SCRIPT_PATH` and `RUSTRUN_SCRIPT_DIR`. (`CARGO_MANIFEST_DIR` points
-at the hidden cache project, so don't use it to locate files.)
+To find files next to the script **at run time** from any working directory,
+use these environment variables:
+
+- `RUSTRUN_SCRIPT_PATH` is the script's absolute path, with symlinks resolved
+  (`/home/you/scripts/report.rs`)
+- `RUSTRUN_SCRIPT_DIR` is the folder that contains it (`/home/you/scripts`)
+
+They are *not* the working directory. If you run
+`cd ~/data && rustrun ~/scripts/report.rs`, the cwd is `~/data`, but
+`RUSTRUN_SCRIPT_DIR` is `~/scripts`. They are also set at compile time for
+`env!(...)`. Don't use `CARGO_MANIFEST_DIR` to find files: it points at the
+hidden cache project.
 
 ### Scripts must have `fn main()`
 

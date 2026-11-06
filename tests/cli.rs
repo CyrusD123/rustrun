@@ -156,6 +156,19 @@ fn edition_header() {
 }
 
 #[test]
+fn default_edition_is_2024() {
+    let f = Fixture::new();
+    // With no `edition:` line, `gen` is reserved (2024) and let-chains work (2024-only).
+    f.write("gen.rs", "fn main() { let gen = 1; println!(\"{gen}\"); }\n");
+    assert!(!f.run(&["gen.rs"]).status.success());
+    f.write(
+        "chains.rs",
+        "fn main() { let x = Some(3); if let Some(n) = x && n > 2 { println!(\"chained {n}\"); } }\n",
+    );
+    assert_eq!(f.run_ok(&["chains.rs"]), "chained 3\n");
+}
+
+#[test]
 fn release_flag() {
     let f = Fixture::new();
     f.write("rel.rs", "fn main() { println!(\"{}\", cfg!(debug_assertions)); }\n");
@@ -183,7 +196,7 @@ fn manifest_points_at_original_script() {
     let m = manifest(&f, "sub dir/tool.rs");
     let real = f.path("sub dir/tool.rs").canonicalize().unwrap();
     assert_eq!(m["bin"][0]["path"].as_str(), Some(real.to_str().unwrap()));
-    assert_eq!(m["package"]["edition"].as_str(), Some("2021"));
+    assert_eq!(m["package"]["edition"].as_str(), Some("2024"));
 }
 
 #[test]
