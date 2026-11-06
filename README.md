@@ -180,8 +180,8 @@ fake sparse index written to a temp directory.
 
 - [x] **First pass:** names in a comment header, versions resolved
       automatically, multi-file scripts compiled in place
-- [ ] Find crates from `use` paths and macro invocations with `syn`, so no
-      header is needed
+- [ ] Infer crates automatically, so no header is needed (design:
+      [docs/dependency-inference.md](docs/dependency-inference.md))
 - [ ] Infer features (e.g. `#[derive(Serialize)]` means `serde/derive`)
 - [ ] Disambiguate crate names (renamed crates, module name ≠ crate name)
 - [ ] Local path dependencies, `default-features = false`, multi-comparator
