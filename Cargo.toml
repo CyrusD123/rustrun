@@ -1,0 +1,27 @@
+[package]
+name = "rustrun"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+description = "Run standalone Rust scripts without writing a Cargo.toml: dependency versions are derived automatically"
+authors = ["Cyrus Desai", "Logan Kohley"]
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+keywords = ["script", "cargo", "scripting", "dependencies"]
+categories = ["command-line-utilities", "development-tools::cargo-plugins"]
+exclude = ["/.github"]
+# `examples/` holds rustrun *scripts*, not Cargo examples of this crate.
+autoexamples = false
+
+[dependencies]
+anyhow = "1.0.104"
+clap = { version = "4.6.7", features = ["derive", "env"] }
+dirs = "7.0.0"
+semver = "1.0.28"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+toml = "1.2.1"
+ureq = "3.5.1"
+
+[dev-dependencies]
+tempfile = "3.27.0"
